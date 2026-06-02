@@ -12,6 +12,12 @@ export default function Preloader({ onDone }) {
   const [progress, setProgress] = useState(() => (reduceMotion ? 100 : 0))
   const [phase, setPhase] = useState(() => (reduceMotion ? 'reveal' : 'loading')) // loading -> reveal
 
+  // Remove the HTML boot preloader as soon as the real preloader mounts
+  useEffect(() => {
+    const boot = document.getElementById('boot-preloader')
+    if (boot) boot.remove()
+  }, [])
+
   // Durées (ajuste ici si besoin) — total ~1.4s avant le site
   const durationMs = reduceMotion ? 200 : 1100
   const holdAtEndMs = reduceMotion ? 0 : 200

@@ -5,14 +5,22 @@ import { LenisContext } from './lenisContext.js'
 export default function ScrollProvider({ children }) {
   const lenis = useMemo(() => {
     if (typeof window === 'undefined') return null
+    const ua = window.navigator?.userAgent ?? ''
+    const isWindows = /Windows/i.test(ua)
     return new Lenis({
-      duration: 1.15,
+      duration: 1,
       easing: (t) => 1 - Math.pow(1 - t, 4),
-      smoothWheel: true,
-      // Important for laptop trackpads / touch gestures (Windows precision touchpad)
-      smoothTouch: true,
-      wheelMultiplier: 0.85,
-      touchMultiplier: 1.15,
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      // Sur Windows (precision touchpad), l'interception du wheel peut casser
+      // le scroll 2 doigts selon navigateur/driver. On garde Lenis pour scrollTo,
+      // mais on laisse le wheel en natif pour fiabilité.
+      smoothWheel: !isWindows,
+      // Better support for precision touchpads / 2-finger gestures
+      syncTouch: true,
+      normalizeWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1,
       lerp: 0.09,
     })
   }, [])

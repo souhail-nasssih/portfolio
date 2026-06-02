@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useMemo } from 'react'
 import { useI18n } from '../../i18n/context.js'
+import { useLenis } from '../effects/lenisContext.js'
 
 function Pill({ children }) {
   return (
@@ -27,17 +28,21 @@ function CloseButton({ onClick }) {
 export default function ProjectModal({ project, open, onClose }) {
   const reduceMotion = useReducedMotion()
   const { t } = useI18n()
+  const lenis = useLenis()
 
   const screenshot = useMemo(() => project?.screenshots?.[0], [project])
 
   useEffect(() => {
     if (!open) return
-    const prev = document.body.style.overflow
+    const prevOverflow = document.body.style.overflow
+    // Lock scroll reliably (prevents "stuck no-scroll" after close)
     document.body.style.overflow = 'hidden'
+    lenis?.stop?.()
     return () => {
-      document.body.style.overflow = prev
+      document.body.style.overflow = prevOverflow
+      lenis?.start?.()
     }
-  }, [open])
+  }, [open, lenis])
 
   useEffect(() => {
     if (!open) return
