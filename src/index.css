@@ -47,6 +47,11 @@ body {
   overscroll-behavior-y: auto;
 }
 
+html {
+  /* Prevent layout shift when scrollbars appear/disappear (modal open/close) */
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
   background: var(--color-bg);

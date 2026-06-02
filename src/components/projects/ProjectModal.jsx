@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 import { useI18n } from '../../i18n/context.js'
 import { useLenis } from '../effects/lenisContext.js'
 
@@ -31,11 +32,37 @@ export default function ProjectModal({ project, open, onClose }) {
   const lenis = useLenis()
 
   const screenshot = useMemo(() => project?.screenshots?.[0], [project])
+  const overlayMotion = reduceMotion
+    ? {
+        initial: { opacity: 1 },
+        animate: { opacity: 1 },
+        exit: { opacity: 1 },
+        transition: { duration: 0 },
+      }
+    : {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        exit: { opacity: 0 },
+        transition: { duration: 0.22, ease: 'easeOut' },
+      }
+
+  const panelMotion = reduceMotion
+    ? {
+        initial: { opacity: 1, y: 0, scale: 1 },
+        animate: { opacity: 1, y: 0, scale: 1 },
+        exit: { opacity: 1, y: 0, scale: 1 },
+        transition: { duration: 0 },
+      }
+    : {
+        initial: { opacity: 0, y: 18, scale: 0.985 },
+        animate: { opacity: 1, y: 0, scale: 1 },
+        exit: { opacity: 0, y: 12, scale: 0.99 },
+        transition: { type: 'spring', stiffness: 360, damping: 30, mass: 0.9 },
+      }
 
   useEffect(() => {
     if (!open) return
     const prevOverflow = document.body.style.overflow
-    // Lock scroll reliably (prevents "stuck no-scroll" after close)
     document.body.style.overflow = 'hidden'
     lenis?.stop?.()
     return () => {
@@ -53,50 +80,46 @@ export default function ProjectModal({ project, open, onClose }) {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [open, onClose])
 
-  return (
+  if (typeof document === 'undefined') return null
+
+  return createPortal(
     <AnimatePresence>
       {open ? (
         <motion.div
           className="fixed inset-0 z-110 flex items-center justify-center p-4 md:p-8"
-          initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
+          initial={overlayMotion.initial}
+          animate={overlayMotion.animate}
+          exit={overlayMotion.exit}
+          transition={overlayMotion.transition}
         >
           <motion.button
             type="button"
             aria-label={t('projects.modal.closeAria')}
             onClick={onClose}
             className="absolute inset-0 cursor-default bg-black/60 backdrop-blur-sm"
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
+            initial={overlayMotion.initial}
+            animate={overlayMotion.animate}
+            exit={overlayMotion.exit}
+            transition={overlayMotion.transition}
           />
 
           <motion.div
             role="dialog"
             aria-modal="true"
-            className="relative w-full max-w-4xl overflow-hidden rounded-3xl border border-white/10 bg-bg/90 shadow-[0_0_0_1px_rgba(255,255,255,0.08)] backdrop-blur-xl"
-            initial={
-              reduceMotion
-                ? { opacity: 1, y: 0, scale: 1 }
-                : { opacity: 0, y: 18, scale: 0.98 }
-            }
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={
-              reduceMotion
-                ? { opacity: 1, y: 0, scale: 1 }
-                : { opacity: 0, y: 18, scale: 0.98 }
-            }
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-10 flex max-h-[min(90svh,900px)] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-bg/90 shadow-[0_0_0_1px_rgba(255,255,255,0.08)] backdrop-blur-xl"
+            initial={panelMotion.initial}
+            animate={panelMotion.animate}
+            exit={panelMotion.exit}
+            transition={panelMotion.transition}
           >
             <div className="pointer-events-none absolute inset-0">
               <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan/12 blur-3xl" />
               <div className="absolute -bottom-28 -right-24 h-80 w-80 rounded-full bg-purple/12 blur-3xl" />
             </div>
 
-            <div className="relative grid grid-cols-1 gap-0 md:grid-cols-2">
-              <div className="relative aspect-16/11 md:aspect-auto">
-                <div className="absolute inset-0 overflow-hidden">
+            <div className="relative grid min-h-0 flex-1 grid-cols-1 gap-0 overflow-y-auto md:grid-cols-2">
+              <div className="relative min-h-[200px] md:min-h-0">
+                <div className="absolute inset-0 overflow-hidden md:relative md:min-h-[280px]">
                   {screenshot ? (
                     <img
                       src={screenshot}
@@ -170,7 +193,7 @@ export default function ProjectModal({ project, open, onClose }) {
           </motion.div>
         </motion.div>
       ) : null}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   )
 }
-

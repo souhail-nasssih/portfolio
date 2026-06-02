@@ -1,7 +1,26 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useI18n } from '../../i18n/context.js'
 import { useLenis } from './lenisContext.js'
+
+const SECTION_IDS = ['hero', 'skills', 'timeline', 'projects']
+
+function pickActiveSection(ids) {
+  const marker = window.innerHeight * 0.33
+  const doc = document.documentElement
+  const atBottom =
+    window.scrollY + window.innerHeight >= doc.scrollHeight - 48
+
+  if (atBottom) return ids[ids.length - 1] ?? 'hero'
+
+  let current = ids[0] ?? 'hero'
+  for (const id of ids) {
+    const el = document.getElementById(id)
+    if (!el) continue
+    if (el.getBoundingClientRect().top <= marker) current = id
+  }
+  return current
+}
 
 export default function ScrollNav() {
   const reduceMotion = useReducedMotion()
@@ -19,33 +38,44 @@ export default function ScrollNav() {
     [t],
   )
 
+  const syncActive = useCallback(() => {
+    const next = pickActiveSection(SECTION_IDS)
+    setActive((prev) => (prev === next ? prev : next))
+  }, [])
+
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        if (visible?.target?.id) setActive(visible.target.id)
-      },
-      { rootMargin: '-35% 0px -55% 0px', threshold: [0.1, 0.25, 0.5] },
-    )
+    syncActive()
 
-    sections.forEach(({ id }) => {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
-    })
+    let raf = 0
+    const onScroll = () => {
+      if (raf) return
+      raf = requestAnimationFrame(() => {
+        raf = 0
+        syncActive()
+      })
+    }
 
-    return () => observer.disconnect()
-  }, [sections])
+    if (lenis) lenis.on('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
 
-  if (reduceMotion) return null
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      if (lenis) lenis.off('scroll', onScroll)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [lenis, syncActive])
 
   const scrollTo = (id) => {
+    setActive(id)
     const el = document.getElementById(id)
     if (!el) return
     if (lenis) lenis.scrollTo(el, { offset: -24, duration: 1.35 })
     else el.scrollIntoView({ behavior: 'smooth' })
   }
+
+  const Dot = reduceMotion ? 'span' : motion.span
 
   return (
     <nav
@@ -60,20 +90,23 @@ export default function ScrollNav() {
             type="button"
             onClick={() => scrollTo(id)}
             aria-label={label}
-            aria-current={isActive ? 'true' : undefined}
+            aria-current={isActive ? 'location' : undefined}
             className="group relative flex items-center justify-end gap-3"
           >
             <span
               className={[
-                'pointer-events-none rounded-lg border border-white/10 bg-bg/80 px-2 py-1 text-[10px] font-semibold tracking-wider text-muted opacity-0 backdrop-blur transition',
-                'group-hover:opacity-100',
-                isActive ? 'opacity-100 text-text' : '',
+                'pointer-events-none rounded-lg border px-2 py-1 text-[10px] font-semibold tracking-wider backdrop-blur transition',
+                isActive
+                  ? 'border-cyan/30 bg-bg/90 text-text opacity-100'
+                  : 'border-white/10 bg-bg/80 text-muted opacity-0 group-hover:opacity-100',
               ].join(' ')}
             >
               {label}
             </span>
-            <motion.span
-              layout
+            <Dot
+              {...(reduceMotion
+                ? {}
+                : { layout: true, transition: { type: 'spring', stiffness: 500, damping: 32 } })}
               className={[
                 'block rounded-full border transition',
                 isActive
