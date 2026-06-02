@@ -12,9 +12,9 @@ export default function Preloader({ onDone }) {
   const [progress, setProgress] = useState(() => (reduceMotion ? 100 : 0))
   const [phase, setPhase] = useState(() => (reduceMotion ? 'reveal' : 'loading')) // loading -> reveal
 
-  // Give it a premium "breathing time" (avoid instant disappear)
-  const durationMs = reduceMotion ? 250 : 1700
-  const holdAtEndMs = reduceMotion ? 0 : 650
+  // Durées (ajuste ici si besoin) — total ~1.4s avant le site
+  const durationMs = reduceMotion ? 200 : 1100
+  const holdAtEndMs = reduceMotion ? 0 : 200
   const progressText = useMemo(() => `${Math.round(progress)}%`, [progress])
   const stepText = useMemo(() => {
     const steps = t('preloader.steps')
@@ -53,7 +53,7 @@ export default function Preloader({ onDone }) {
 
   useEffect(() => {
     if (phase !== 'reveal') return
-    const t = setTimeout(() => onDone?.(), reduceMotion ? 0 : 900)
+    const t = setTimeout(() => onDone?.(), reduceMotion ? 0 : 550)
     return () => clearTimeout(t)
   }, [phase, onDone, reduceMotion])
 
