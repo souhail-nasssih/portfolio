@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  /* Raw tokens (usable in custom CSS too) */
+  --bg: #0b0f19;
+  --text: #f3f4f6;
+  --muted: #9ca3af;
+  --cyan: #00e5ff;
+  --purple: #7c3aed;
+}
+
+/* Tailwind v4 CSS-first theme tokens */
+@theme {
+  --color-bg: var(--bg);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-cyan: var(--cyan);
+  --color-purple: var(--purple);
+
+  --font-family-ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+
+  --shadow-glowCyan: 0 0 0 1px color-mix(in oklab, var(--color-cyan) 35%, transparent),
+    0 0 24px color-mix(in oklab, var(--color-cyan) 25%, transparent),
+    0 0 64px color-mix(in oklab, var(--color-cyan) 15%, transparent);
+  --shadow-glowPurple: 0 0 0 1px color-mix(in oklab, var(--color-purple) 35%, transparent),
+    0 0 24px color-mix(in oklab, var(--color-purple) 25%, transparent),
+    0 0 64px color-mix(in oklab, var(--color-purple) 15%, transparent);
+
+  --animate-floaty: floaty 6s ease-in-out infinite;
+  --keyframes-floaty: {
+    0%, 100% { transform: translate3d(0, -6px, 0); }
+    50% { transform: translate3d(0, 6px, 0); }
+  }
+
+  --animate-sheen: sheen 2.2s ease-in-out infinite;
+  --keyframes-sheen: {
+    0% { transform: translateX(-120%) skewX(-18deg); }
+    100% { transform: translateX(120%) skewX(-18deg); }
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family-ui);
+  overflow-x: hidden;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-cyan) 25%, transparent);
+}
+

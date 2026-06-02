@@ -1,0 +1,173 @@
+/**
+ * Texte UI (FR/EN) pour l’app (hors section Projets qui est dans `projects.copy.js`).
+ * Objectif : modifier facilement tout le wording sans toucher aux composants.
+ */
+
+export const uiCopy = {
+  fr: {
+    preloader: {
+      label: 'INITIALISATION',
+      hint: 'Préparation de l’expérience',
+      steps: [
+        'Chargement des modules…',
+        'Compilation des composants…',
+        'Optimisation des animations…',
+        'Connexion des données…',
+        'Finalisation…',
+      ],
+      terminalTitle: 'system.log',
+      terminalLines: [
+        '[boot] session start',
+        '[ui] building cinematic layout',
+        '[motion] syncing framer motion',
+        '[scroll] enabling smooth scroll',
+        '[fx] particles background ready',
+        '[data] portfolio loaded',
+      ],
+    },
+    nav: {
+      label: 'Navigation des sections',
+      hero: 'Accueil',
+      skills: 'Compétences',
+      timeline: 'Parcours',
+      projects: 'Projets',
+    },
+    scroll: {
+      toTop: 'Retour en haut',
+    },
+    hero: {
+      value:
+        'Je conçois des applications web & mobiles complètes — performance, UX et architecture propre.',
+      aboutFallback: 'Développeur Full Stack passionné par Laravel, React et Flutter.',
+      readMore: 'Lire tout',
+      collapse: 'Réduire',
+      ctaProjects: 'Voir les projets',
+      ctaSkills: 'Mes compétences',
+      portraitLabel: 'Portrait',
+      portraitAlt: (name) => `Portrait de ${name}`,
+      availability: 'Disponible pour des opportunités',
+    },
+    skills: {
+      kicker: 'CAPABILITÉS',
+      title: 'Compétences & Stack',
+      desc: 'Un stack moderne orienté performance, UX et architecture propre — web, mobile et outillage.',
+      web: 'Développement Web',
+      mobile: 'Développement Mobile',
+      tools: 'Outils & Bases de données',
+      soft: 'SOFT SKILLS',
+      languages: 'LANGUES',
+      interests: 'CENTRES D’INTÉRÊT',
+    },
+    timeline: {
+      kicker: 'PARCOURS',
+      title: 'Expériences & Diplômes',
+      desc: 'Une timeline futuriste de mon parcours : formation et expérience professionnelle.',
+      experiences: 'EXPÉRIENCES',
+      diplomas: 'DIPLÔMES',
+      itemExperience: 'EXPÉRIENCE',
+      itemDiploma: 'DIPLÔME',
+    },
+    devBg: {
+      roles: [
+        'DÉVELOPPEUR FULL STACK',
+        'WEB & MOBILE',
+        'LARAVEL · REACT · FLUTTER',
+        'CONSTRUCTION DE SYSTÈMES NUMÉRIQUES',
+      ],
+      terminalTitle: 'dev-terminal',
+      terminalLines: [
+        '> whoami',
+        'souhail.nassih — développeur full stack',
+        '> stack --list',
+        'Laravel · React · Inertia · Flutter',
+        '> mission',
+        'Créer des apps web & mobile robustes',
+        '> status',
+        '● disponible · construire le futur',
+      ],
+    },
+  },
+  en: {
+    preloader: {
+      label: 'INITIALIZING',
+      hint: 'Preparing the experience',
+      steps: [
+        'Loading modules…',
+        'Compiling components…',
+        'Optimizing animations…',
+        'Wiring data…',
+        'Finalizing…',
+      ],
+      terminalTitle: 'system.log',
+      terminalLines: [
+        '[boot] session start',
+        '[ui] building cinematic layout',
+        '[motion] syncing framer motion',
+        '[scroll] enabling smooth scroll',
+        '[fx] particles background ready',
+        '[data] portfolio loaded',
+      ],
+    },
+    nav: {
+      label: 'Section navigation',
+      hero: 'Home',
+      skills: 'Skills',
+      timeline: 'Journey',
+      projects: 'Projects',
+    },
+    scroll: {
+      toTop: 'Back to top',
+    },
+    hero: {
+      value: 'I build end‑to‑end web & mobile applications — performance, UX, and clean architecture.',
+      aboutFallback: 'Full Stack developer passionate about Laravel, React, and Flutter.',
+      readMore: 'Read more',
+      collapse: 'Collapse',
+      ctaProjects: 'View projects',
+      ctaSkills: 'My skills',
+      portraitLabel: 'Portrait',
+      portraitAlt: (name) => `${name} portrait`,
+      availability: 'Open to opportunities',
+    },
+    skills: {
+      kicker: 'CAPABILITIES',
+      title: 'Skills & Stack',
+      desc: 'A modern stack focused on performance, UX, and clean architecture — web, mobile, and tooling.',
+      web: 'Web Development',
+      mobile: 'Mobile Development',
+      tools: 'Tools & Databases',
+      soft: 'SOFT SKILLS',
+      languages: 'LANGUAGES',
+      interests: 'INTERESTS',
+    },
+    timeline: {
+      kicker: 'JOURNEY',
+      title: 'Experience & Education',
+      desc: 'A futuristic timeline of my path: education and professional experience.',
+      experiences: 'EXPERIENCES',
+      diplomas: 'EDUCATION',
+      itemExperience: 'EXPERIENCE',
+      itemDiploma: 'EDUCATION',
+    },
+    devBg: {
+      roles: [
+        'FULL STACK DEVELOPER',
+        'WEB & MOBILE',
+        'LARAVEL · REACT · FLUTTER',
+        'BUILDING DIGITAL SYSTEMS',
+      ],
+      terminalTitle: 'dev-terminal',
+      terminalLines: [
+        '> whoami',
+        'souhail.nassih — full stack developer',
+        '> stack --list',
+        'Laravel · React · Inertia · Flutter',
+        '> mission',
+        'Build robust web & mobile apps',
+        '> status',
+        '● available · building the future',
+      ],
+    },
+  },
+}
+
