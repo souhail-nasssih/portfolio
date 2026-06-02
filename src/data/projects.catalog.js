@@ -5,7 +5,10 @@
  * - Duplique un objet ci-dessous
  * - Donne un `id` unique (string, stable)
  * - Remplis `i18n.fr` et `i18n.en`
- * - Optionnel : `role`, `screenshots`, `links`
+ * - Optionnel : `role`, `screenshots` (tableau d’URLs/chemins), `links`
+ *
+ * Exemple screenshots :
+ * screenshots: ['/projects/mon-projet/1.png', '/projects/mon-projet/2.png'],
  *
  * Notes:
  * - `stack` est partagé (techno names)

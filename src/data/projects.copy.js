@@ -12,10 +12,16 @@ export const projectsCopy = {
     openDetail: 'Ouvrir le détail',
     modal: {
       project: 'PROJET',
+      gallery: 'CAPTURES',
       highlights: 'POINTS CLÉS',
       viewCaseStudy: "Voir l’étude de cas",
       close: 'Fermer',
       closeAria: 'Fermer la fenêtre',
+      prevImage: 'Image précédente',
+      nextImage: 'Image suivante',
+      goToImage: 'Aller à l’image',
+      noScreenshots: 'Aucune capture disponible',
+      screenshotAlt: 'Capture du projet',
     },
   },
   en: {
@@ -26,10 +32,16 @@ export const projectsCopy = {
     openDetail: 'Open details',
     modal: {
       project: 'PROJECT',
+      gallery: 'SCREENSHOTS',
       highlights: 'HIGHLIGHTS',
       viewCaseStudy: 'View case study',
       close: 'Close',
       closeAria: 'Close modal',
+      prevImage: 'Previous image',
+      nextImage: 'Next image',
+      goToImage: 'Go to image',
+      noScreenshots: 'No screenshots available',
+      screenshotAlt: 'Project screenshot',
     },
   },
 }

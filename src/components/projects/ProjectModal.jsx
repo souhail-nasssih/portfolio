@@ -1,8 +1,9 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useI18n } from '../../i18n/context.js'
 import { useLenis } from '../effects/lenisContext.js'
+import ProjectModalGallery from './ProjectModalGallery.jsx'
 
 function Pill({ children }) {
   return (
@@ -31,7 +32,6 @@ export default function ProjectModal({ project, open, onClose }) {
   const { t } = useI18n()
   const lenis = useLenis()
 
-  const screenshot = useMemo(() => project?.screenshots?.[0], [project])
   const overlayMotion = reduceMotion
     ? {
         initial: { opacity: 1 },
@@ -118,22 +118,11 @@ export default function ProjectModal({ project, open, onClose }) {
             </div>
 
             <div className="relative grid min-h-0 flex-1 grid-cols-1 gap-0 overflow-y-auto md:grid-cols-2">
-              <div className="relative min-h-[200px] md:min-h-0">
-                <div className="absolute inset-0 overflow-hidden md:relative md:min-h-[280px]">
-                  {screenshot ? (
-                    <img
-                      src={screenshot}
-                      alt={`${project?.title ?? 'Project'} screenshot`}
-                      className="h-full w-full object-cover opacity-90"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="h-full w-full bg-white/5" />
-                  )}
-                  <div className="absolute inset-0 bg-[radial-gradient(1000px_circle_at_20%_20%,rgba(0,229,255,0.18),transparent_45%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(1000px_circle_at_80%_70%,rgba(124,58,237,0.16),transparent_48%)]" />
-                  <div className="absolute inset-0 bg-linear-to-t from-bg/95 via-bg/30 to-transparent" />
-                </div>
+              <div className="relative md:min-h-0">
+                <ProjectModalGallery
+                  screenshots={project?.screenshots}
+                  projectTitle={project?.title ?? ''}
+                />
               </div>
 
               <div className="relative p-6 md:p-8">
